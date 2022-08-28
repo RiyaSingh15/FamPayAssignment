@@ -58,10 +58,10 @@ def get_paged_result(publishedDate: datetime.datetime) -> List[dict]:
                 payload['pageToken'] = response.json().get('nextPageToken')
                 i = i + 1
             elif response.status_code == 403 and response.json()['error']['errors'][0]['reason'] == 'quotaExceeded':
-                KEY_INDEX = KEY_INDEX + 1 if KEY_INDEX < len(KEYS) else 0
+                KEY_INDEX = KEY_INDEX + 1 if KEY_INDEX < (len(KEYS)-1) else 0
 
     elif response.status_code == 403 and response.json()['error']['errors'][0]['reason'] == 'quotaExceeded':
-        KEY_INDEX = KEY_INDEX + 1 if KEY_INDEX < len(KEYS) else 0
+        KEY_INDEX = KEY_INDEX + 1 if KEY_INDEX < (len(KEYS)-1) else 0
     
     return video_list
 
