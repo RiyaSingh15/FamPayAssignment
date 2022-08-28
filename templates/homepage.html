@@ -9,30 +9,46 @@
     <title>Youtube</title>
 </head>
 <body>
-    <nav class="navbar navbar-light bg-light">
-    <a class="navbar-brand" href="#">
-      <img src="https://toppng.com/uploads/preview/youtube-logo-white-svg-11549681002gymvrhd99o.png" width="30" height="30" class="d-inline-block align-top" alt="">
-      Youtube
-    </a>
-  </nav>
-  <div class="row" >
-    <div class="col-sm-6">
-        <input type="search" class="col-sm-6 form-control" id="search" style="width: 25%;margin-left: 4%;margin-top: 2%;" placeholder="Search by name, description" onkeyup="search();">
+<div class="row">
+    <nav class="navbar navbar-expand-lg bg-light">
+        <div class="container-fluid row">
+           <div class="col-sm-8">
+            <a class="navbar-brand ms-2" href="https://www.youtube.com">
+                <img src="https://toppng.com/uploads/preview/youtube-logo-white-svg-11549681002gymvrhd99o.png" width="80px" height="45px">
+                <span>Youtube</span>
+            </a>
+           </div>
+            <div class="col-sm-4 row">
+                <div class="col-sm-6">
+                    <input id="search" class="form-control me-2" type="search" placeholder="Search by name, description" aria-label="Search" onkeyup="search();">
+                </div>
+                <div class="col-sm-3 text-center">
+                    <button class="btn btn-outline-dark"  onclick="getVideoData(prev);" id="prev">
+                        <span>
+                            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-left" viewBox="0 0 16 16">
+                                <path fill-rule="evenodd" d="M8.354 1.646a.5.5 0 0 1 0 .708L2.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                                <path fill-rule="evenodd" d="M12.354 1.646a.5.5 0 0 1 0 .708L6.707 8l5.647 5.646a.5.5 0 0 1-.708.708l-6-6a.5.5 0 0 1 0-.708l6-6a.5.5 0 0 1 .708 0z"/>
+                              </svg>
+                            Previous
+                        </span>
+                    </button>
+                </div>
+                <div class="col-sm-3 text-center">
+                    <button class="btn btn-outline-dark"  onclick="getVideoData(next);" id="next">
+                        Next
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-chevron-double-right" viewBox="0 0 16 16">
+                            <path fill-rule="evenodd" d="M3.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L9.293 8 3.646 2.354a.5.5 0 0 1 0-.708z"/>
+                            <path fill-rule="evenodd" d="M7.646 1.646a.5.5 0 0 1 .708 0l6 6a.5.5 0 0 1 0 .708l-6 6a.5.5 0 0 1-.708-.708L13.293 8 7.646 2.354a.5.5 0 0 1 0-.708z"/>
+                          </svg>
+                        </button>
+                </div>
+                </div>
+        </div>
+    </nav>
+    <div class="container-fluid">
+        <div class="row" id="video-data"><!-- Data loads here --></div>
     </div>
-    <div style="margin-left: 70%;margin-top: -2%;">
-        <nav aria-label="Page navigation example">
-          <ul class="pagination">
-            <li class="page-item"><button class="page-link" onclick="getVideoData(prev);" id="prev">Previous</a></li>
-            <li class="page-item"><button class="page-link" onclick="getVideoData(next);" id="next">Next</button></li>
-          </ul>
-        </nav> 
-    </div>
-    </div>
-  <div class="container">
-    <div class="row" id="video-data">
-        <!-- Data loads here -->
-    </div>
-  </div>
+</div>
 </body>
 <script src="https://code.jquery.com/jquery-3.6.1.min.js" integrity="sha256-o88AwQnZB+VDvE9tvIXrMQaPlFFSUTR+nldQm1LuPXQ=" crossorigin="anonymous"></script>
 <script>
@@ -44,9 +60,6 @@
         var url = `/videos?limit=12&title=${searchedTerm}&description=${searchedTerm}`
         getVideoData(url);
     }
-    function redirectToYoutube(url) {
-        window.open(url, '_blank')
-    }
     function getVideoData(url) {
         var url = url ? url : '/videos?limit=12';
         $.ajax({
@@ -57,17 +70,29 @@
             success: function (data) {
                 html = '';
                 data.results.forEach(video => {
-                    html += `<div class="col-sm-3 m-4">
-                                <div class="card" style="width: 18rem;" onclick="redirectToYoutube('${youtubeHost + video.id}');">
-                                    <img class="card-img-top" src="${video.thumbnails.high.url}" alt="Card image cap">
-                                    <div class="card-body">
-                                        <p class="card-text">${video.title}</p>
+                    html += `<div class="col-sm-3 p-5">
+                                <a href="${youtubeHost+video.id}" target="_blank">
+                                    <div class="card">
+                                        <img class="card-img-top" src="${video.thumbnails.high.url}" alt="Card image cap">
+                                        <div class="card-body">
+                                            <p class="card-text">${video.title}</p>
+                                        </div>
                                     </div>
-                                </div>
+                                </a>
                             </div>`
                 });
                 prev = data.previous
                 next = data.next
+                if(!prev){
+                    $('#prev').addClass('disabled')
+                } else{
+                    $('#prev').removeClass('disabled')
+                }
+                if(!next){
+                    $('#next').addClass('disabled')
+                } else{
+                    $('#next').removeClass('disabled')
+                }
                 $('#video-data').html(html);
             }
         });
