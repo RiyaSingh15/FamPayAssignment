@@ -1,0 +1,11 @@
+# Virtual env
+env/ 
+
+# Environment variables file
+setup.sh
+
+# db file
+db.sqlite3
+
+# python cache
+*.pyc
