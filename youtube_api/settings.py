@@ -91,3 +91,10 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/4.1/howto/static-files/
 
 STATIC_URL = 'static/'
+
+# Custom Settings
+
+YOUTUBE_HOST = 'https://www.googleapis.com/youtube/v3'
+
+API_KEYS = os.environ['API_KEYS']
+MAX_DEPTH = int(os.environ['MAX_DEPTH'])
