@@ -1,9 +1,14 @@
 import threading
+from django.shortcuts import render
 from rest_framework import viewsets
 
 from search.models import Videos
 from search.serializers import VideoSerializer
 from youtube_polling import poll_youtube
+
+
+def homepage(request):
+    return render(request, 'homepage.html')
 
 
 class VideosViewset(viewsets.ReadOnlyModelViewSet):

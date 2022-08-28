@@ -1,0 +1,17 @@
+version: "3.9"
+   
+services:
+  youtube_api:
+    build: .
+    command: bash run.sh
+    volumes:
+      - ./search:/youtube_api/search
+      - ./youtube_api:/youtube_api/youtube_api
+      - ./templates:/youtube_api/templates
+    ports:
+      - "8000:8000"
+    environment:
+      - SECRET_KEY=YOUR_SECRET_KEY_HERE
+      - API_KEYS=GOOGLE_API_KEY
+      - MAX_DEPTH=MAX_DEPTH
+    
